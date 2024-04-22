@@ -1,6 +1,9 @@
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by thook on 10/7/15.
@@ -34,6 +37,25 @@ public class HamletParser {
 
     public String getHamletData(){
         return hamletData;
+    }
+
+    public void changeAllStringOccurrences(String target, String replaceWith) {
+        Pattern pattern = Pattern.compile(target, Pattern.LITERAL | Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+        Matcher matcher = pattern.matcher(this.hamletData);
+        this.hamletData = matcher.replaceAll(replaceWith);
+        storeInFile(this.hamletData);
+    }
+
+    public void storeInFile(String output){
+        try{
+            PrintWriter fileOut = new PrintWriter("output.txt");
+            fileOut.println(output);
+            fileOut.close();
+
+        } catch(IOException e) {
+            //Display on the console if there is a problem writing to a file.
+            System.out.println("There is a problem with the writing " + e.getMessage());
+        }
     }
 
 }
